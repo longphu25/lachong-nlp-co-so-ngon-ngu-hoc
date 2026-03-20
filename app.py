@@ -73,3 +73,17 @@ POS_COLORS = {
 # TODO: Thêm xử lý lỗi khi input rỗng
 # TODO: Thêm tính năng export kết quả ra file CSV
 # TODO: Thêm highlight màu cho từng loại từ loại khác nhau
+
+# Lưu kết quả vào session_state để không mất khi rerun
+if analyze_clicked:
+    if not text.strip():
+        st.error("⚠️ Vui lòng nhập nội dung!")
+        st.session_state.pop("pos_result", None)
+    else:
+        st.session_state["pos_text"] = text
+        st.session_state["pos_tokens"] = word_tokenize(text)
+        st.session_state["pos_result"] = pos_tag(text)
+        
+if "pos_result" in st.session_state:
+    pos_result = st.session_state["pos_result"]
+    tokens = st.session_state["pos_tokens"]
